@@ -9,9 +9,6 @@ data <- unzip("C:/Data/CleanDataProj")
 
 
 ## Installing and Loading Relevant Packages ##
-install.packages("readr")
-install.packages("dplyr")
-library(readr)
 library(dplyr)
 library(tidyr)
 
@@ -29,34 +26,21 @@ train_subject <- read.table(data[[26]])
 train_domain_variables <- read.table(data[[27]])
 train_activity_label <- read.table(data[[28]])
 
-View(test_domain_variables)
 ## Combining Test and Training Data Sets ##
 CombinedSubject <- rbind(test_subject, train_subject)
 CombinedActivityLabel<- rbind(test_activity_label, train_activity_label)
 Combined_domain_variables <- rbind(test_domain_variables, train_domain_variables)
 
+
 ##STEP 3##
 ## Adding Descriptions to Activity labels and Removing Corresponding Activity Code ## 
-CombinedActivityLabel$Activity <- apply(CombinedActivityLabel, 1, function(i) {
-    if(i == 1){
-        CombinedActivityLabel$Activity <- "WALKING"
-    }
-    else if(i == 2){
-        CombinedActivityLabel$Activity <- "WALKING_UPSTAIRS"
-    }
-    else if(i == 3){
-        CombinedActivityLabel$Activity <- "WALKING_DOWNSTAIRS"
-    }
-    else if(i == 4){
-        CombinedActivityLabel$Activity <- "SITTING"
-    }
-    else if(i == 5){
-        CombinedActivityLabel$Activity <- "STANDING"
-    }
-    else{
-        CombinedActivityLabel$Activity <- "LAYING"
-    }
-})
+CombinedActivityLabel$Activity <- ""
+CombinedActivityLabel$Activity[CombinedActivityLabel$V1==1] <- "WALKING"
+CombinedActivityLabel$Activity[CombinedActivityLabel$V1==2] <- "WALKING_UPSTAIRS"
+CombinedActivityLabel$Activity[CombinedActivityLabel$V1==3] <- "WALKING_DOWNSTAIRS"
+CombinedActivityLabel$Activity[CombinedActivityLabel$V1==4] <- "SITTING"
+CombinedActivityLabel$Activity[CombinedActivityLabel$V1==5] <- "STANDING"
+CombinedActivityLabel$Activity[CombinedActivityLabel$V1==6] <- "LAYING"
 CombinedActivityLabel$V1 <- NULL
 
 
@@ -91,5 +75,4 @@ TidyAvgSubjectFeature <- Combined_data_set %>% gather(feature,average, -subject,
     arrange(subject, activity)
 
 write.table(TidyAvgSubjectFeature, file = "C:/Data/TidyAvgSubjectFeature.txt", row.names = F)
-
 
