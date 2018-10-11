@@ -68,7 +68,7 @@ colnames(Combined_domain_variables) <- (features$V2)
 ##STEP2##
 
 ## Filtering Domain Variable Data for Only Measures of Std or Mean ## 
-Combined_domain_variables <- combined_domain_variables[grepl("mean|std", colnames(combined_domain_variables))]
+Combined_domain_variables <- Combined_domain_variables[grepl("mean|std", colnames(Combined_domain_variables))]
 Combined_domain_variables <- Combined_domain_variables[!grepl("Freq", colnames(Combined_domain_variables))]
 
 
@@ -84,7 +84,6 @@ names(Combined_data_set) <- gsub("^f","frequency",names(Combined_data_set))
 names(Combined_data_set) <- gsub("BodyBody","Body",names(Combined_data_set))
 names(Combined_data_set) <- tolower(names(Combined_data_set))
 
-
 ##STEP 5##
 ## Creating a Second [tidy] Data Set with the Average of Each Variable for Each Subject and Activity ## 
 TidyAvgSubjectFeature <- Combined_data_set %>% gather(feature,average, -subject,-activity) %>% 
@@ -96,7 +95,3 @@ arrange(TidyAvgSubjectFeature, subject, activity)
 write.table(TidyAvgSubjectFeature, file = "C:/Data/TidyAvgSubjectFeature.txt", row.names = F)
 
 
-install.packages("dataMaid")
-library(dataMaid)
-makeCodebook(TidyAvgSubjectFeature)
-makeCodebook(Combined_data_set)
