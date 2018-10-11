@@ -14,7 +14,6 @@ install.packages("dplyr")
 library(readr)
 library(dplyr)
 library(tidyr)
-stringsasfactors = F
 
 ##STEP1##
 
@@ -88,9 +87,8 @@ names(Combined_data_set) <- tolower(names(Combined_data_set))
 ## Creating a Second [tidy] Data Set with the Average of Each Variable for Each Subject and Activity ## 
 TidyAvgSubjectFeature <- Combined_data_set %>% gather(feature,average, -subject,-activity) %>% 
     group_by(subject,activity,feature) %>% 
-    summarise(average=mean(average)) %>% ungroup()
-
-arrange(TidyAvgSubjectFeature, subject, activity)
+    summarise(average=mean(average)) %>% ungroup()%>%
+    arrange(subject, activity)
 
 write.table(TidyAvgSubjectFeature, file = "C:/Data/TidyAvgSubjectFeature.txt", row.names = F)
 
